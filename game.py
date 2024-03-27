@@ -21,12 +21,20 @@ def change_highscore(player_id: str, score: int, path: str = "users.json"):
         print("Successfully saved the new high score.")
 
 
+def read_questions(questions_path: str = "questions.json") -> list:
+    try:
+        with open(questions_path, "r") as f:
+            questions = json.loads(f.read())
+            questions = questions['questions']
+        return questions
+    except Exception as e:
+        print(f"Fatal error on reading quiz questions: {e}")
+        exit(1)
+
+
 def run_game(player: dict, questions_path: str = "questions.json") -> int:
     score = 0
-    with open(questions_path, "r") as f:
-        questions = json.loads(f.read())
-        questions = questions['questions']
-
+    questions = read_questions(questions_path)
     copy_questions = copy.deepcopy(questions)
 
     while copy_questions:
