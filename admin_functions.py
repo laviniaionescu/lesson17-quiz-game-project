@@ -1,6 +1,7 @@
 import json
 
 import game
+from quiz_logger import logger
 
 MENU = """
 1. Add question
@@ -13,7 +14,7 @@ def add_question(all_questions: list, questions_path: str = "questions.json"):
         new_question = input("Introdu o noua intrebare: ")
         possible_answers = input("Introdu toate raspunsurile posibile separate prin ; ").split(";")
         for index, answer in enumerate(possible_answers):
-            print(f"{index}. {answer}")
+            logger.info(f"{index}. {answer}")
 
         correct_answer = int(input("Introdu una din cifre pentru raspunsul corect: "))
 
@@ -24,7 +25,7 @@ def add_question(all_questions: list, questions_path: str = "questions.json"):
             f.write(json.dumps({"questions": all_questions}, indent=4))
 
     except Exception as e:
-        print(f"Error on adding new question {e}")
+        logger.error(f"Error on adding new question {e}")
 
 
 
@@ -32,7 +33,7 @@ def delete_question(all_questions: list, questions_path: str = "questions.json")
     try:
         questions_list = [question['question'] for question in all_questions]
         for question in questions_list:
-            print(f"{questions_list.index(question)}. {question}")
+            logger.info(f"{questions_list.index(question)}. {question}")
 
         question_to_delete = int(input("Introdu indexul intrebarii pe care doresti sa o stergi: "))
         all_questions.pop(question_to_delete)
@@ -40,18 +41,18 @@ def delete_question(all_questions: list, questions_path: str = "questions.json")
         with open(questions_path, "w") as f:
             f.write(json.dumps({"questions": all_questions}, indent=4))
     except IndexError as e:
-        print(f"Question not found. Error on deleting. {e}")
+        logger.error(f"Question not found. Error on deleting. {e}")
     except Exception as e:
-        print(f"Unknown error on deleting. {e}")
+        logger.error(f"Unknown error on deleting. {e}")
     else:
-        print("Successfully deleted question.")
+        logger.info("Successfully deleted question.")
 
 def change_correct_answer():
     pass
 
 
 def run():
-    print(MENU)
+    logger.info(MENU)
     admin_pick = input("Alege o optiune: ")
     questions = game.read_questions()
     match admin_pick:
