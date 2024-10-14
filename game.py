@@ -25,7 +25,7 @@ def read_questions(questions_path: str = "questions.json") -> list:
     try:
         with open(questions_path, "r") as f:
             questions = json.loads(f.read())
-            questions = questions['questions']
+            # questions = questions['questions']
         return questions
     except Exception as e:
         print(f"Fatal error on reading quiz questions: {e}")
